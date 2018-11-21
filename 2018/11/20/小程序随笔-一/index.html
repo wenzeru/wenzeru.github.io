@@ -7,17 +7,17 @@
   
   <title>小程序随笔&lt;一&gt; | 泽儒的那座山</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="一直在做轻游戏，现在的项目是H5版本的，应BOSS要求接上小程序，接下来是一些零散的问题总结。这个项目前端使用了egret引擎，UI舍弃了eui，使用fairygui。eui">
+  <meta name="description" content="一直在做轻游戏，现在的项目是H5版本的，应BOSS要求接上小程序，接下来是一些零散的经验问题总结。 这个项目前端使用了egret引擎，UI舍弃了eui，使用fairygui。eui过于庞大并且编辑器相当不友好，事实上这个选择对于我们上小程序也有一定的好处，不需要在登录做加载exml，小程序首屏处理exml略微让人蛋疼。接下来是一些流程上的总结和经验（大部分是大佬们的淌坑分享）： 一 CP1.编译，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="小程序随笔&lt;一&gt;">
 <meta property="og:url" content="http://zz7game.cn/2018/11/20/小程序随笔-一/index.html">
 <meta property="og:site_name" content="泽儒的那座山">
-<meta property="og:description" content="一直在做轻游戏，现在的项目是H5版本的，应BOSS要求接上小程序，接下来是一些零散的问题总结。这个项目前端使用了egret引擎，UI舍弃了eui，使用fairygui。eui">
+<meta property="og:description" content="一直在做轻游戏，现在的项目是H5版本的，应BOSS要求接上小程序，接下来是一些零散的经验问题总结。 这个项目前端使用了egret引擎，UI舍弃了eui，使用fairygui。eui过于庞大并且编辑器相当不友好，事实上这个选择对于我们上小程序也有一定的好处，不需要在登录做加载exml，小程序首屏处理exml略微让人蛋疼。接下来是一些流程上的总结和经验（大部分是大佬们的淌坑分享）： 一 CP1.编译，">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-21T02:05:42.314Z">
+<meta property="og:updated_time" content="2018-11-21T03:26:24.214Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="小程序随笔&lt;一&gt;">
-<meta name="twitter:description" content="一直在做轻游戏，现在的项目是H5版本的，应BOSS要求接上小程序，接下来是一些零散的问题总结。这个项目前端使用了egret引擎，UI舍弃了eui，使用fairygui。eui">
+<meta name="twitter:description" content="一直在做轻游戏，现在的项目是H5版本的，应BOSS要求接上小程序，接下来是一些零散的经验问题总结。 这个项目前端使用了egret引擎，UI舍弃了eui，使用fairygui。eui过于庞大并且编辑器相当不友好，事实上这个选择对于我们上小程序也有一定的好处，不需要在登录做加载exml，小程序首屏处理exml略微让人蛋疼。接下来是一些流程上的总结和经验（大部分是大佬们的淌坑分享）： 一 CP1.编译，">
   
     <link rel="alternate" href="/atom.xml" title="泽儒的那座山" type="application/atom+xml">
   
@@ -90,12 +90,30 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>一直在做轻游戏，现在的项目是H5版本的，应BOSS要求接上小程序，接下来是一些零散的问题总结。<br>这个项目前端使用了egret引擎，UI舍弃了eui，使用fairygui。eui</p>
+        <p>一直在做轻游戏，现在的项目是H5版本的，应BOSS要求接上小程序，接下来是一些零散的经验问题总结。</p>
+<p>这个项目前端使用了egret引擎，UI舍弃了eui，使用fairygui。eui过于庞大并且编辑器相当不友好，事实上这个选择对于我们上小程序也有一定的好处，不需要在登录做加载exml，小程序首屏处理exml略微让人蛋疼。接下来是一些流程上的总结和经验（大部分是大佬们的淌坑分享）：</p>
+<h3 id="一-CP"><a href="#一-CP" class="headerlink" title="一 CP"></a>一 CP</h3><p>1.编译，可以直接使用发布版，在egretProperties.json把current设置为wxgame,发布版目前导出的JS文件是不压缩的，如果要压缩请使用命令行egret publish。同时在小程序上是不支持showAll模式的，推荐使用fixedWidth或fixedHeight。</p>
+<p>2.分包，小程序4&amp;8M包限制的原因，必须要把资源分离，这步很简单我们使用的是<br><a href="https://bbs.egret.com/forum.php?mod=viewthread&tid=49702&highlight=%E5%B0%8F%E6%B8%B8%E6%88%8F" target="_blank">白鹭官方推荐的方式</a>，也有大佬整理了一份<a href="https://bbs.egret.com/forum.php?mod=viewthread&tid=49702&highlight=%E5%B0%8F%E6%B8%B8%E6%88%8F" target="_blank">更加简单的</a>，大致流程都是搭建一个资源服务器，使用ResSplitPlugin在编译时把资源分离到另外一个地方，不过我们遇到了一个问题是JSON格式的文件不能使用ressetmanager的加载，我的做法是把这部分内容也加入default.res.json，不知道是不是有其他更好的解决方法。</p>
+<p>3.小程序的IDE提供了多种手机尺寸可供调试，也提供了WIFI/4G/NONE的网络环境可供调试，不过注意在小程序上使用websocket如果在本地的话，需要勾选不检测https，否则是不能通过验证的，另外就是那个真机远程模式不知道什么鬼，就是用不了</p>
+<p>4.本地存贮。小程序是每次都会加载最新的资源，所以需要我们手动将需要本地缓存的资源加入到本地，小程序给我们提供了单个游戏40M的空间，我们需要合理的支配，我们可以修改小程序项目中binary.js image.js 和 text.js 中的 needCache 函数，编写自己的逻辑，将特定资源不存储于本地，下次小游戏启动就会检查本地是否有此资源。<a href="https://bbs.egret.com/thread-48981-1-5.html" target="_blank">TP</a></p>
+<p>5.每次启动我们可以用微信小游戏的updateManager 去检查更新。</p>
+<p>6.小程序经常会有编译不成功的情况，首先检查H5版本是否可以无错编译，然后再尝试编译。</p>
+<p>7.白鹭会出现一些报错，你可以尝试修改小程序的某些代码去适配。</p>
+<p>8.配置文件我们依旧选择了JSON，虽然byteArray小很多，但是uncompress的时候消耗着实有点大，观摩了其他游戏，某些游戏应该是修改了解压的开源类，并且做了分包，所以达到了很好的效果。</p>
+<p>9.微信小程序对大图的渲染相当吃力。</p>
+<p>10.闪断会影响到当前的加载。</p>
+<p>11.小程序在后台运行了超过5秒会被微信强制断线。</p>
+<p>12.未完待续</p>
+<p>###二 运营层</p>
+<p>1.小程序分为体验版、正式版、开发版、提审版。每次更新版本到正式服都需要提审一次，审核时间在1-2天，第一次提审审核资质会相对慢一点，一周内基本可以得到回复。</p>
+<p>2.注意目前的IOS是不允许出现充值以及诱导性的操作，比如分享之类的。</p>
+<p>3.非个人开发者需提供《广电总局版号批文》 、《文化部备案信息》、《计算机软件著作权登记证书》、《游戏自审自查报告》；个人开发者需提供《计算机软件著作权登记证书》、《游戏自审自查报告》等资质。</p>
+<p>###最后祝我的游戏大卖</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://zz7game.cn/2018/11/20/小程序随笔-一/" data-id="cjoqj0l9300007osuspysyw26" class="article-share-link">Share</a>
+      <a data-url="http://zz7game.cn/2018/11/20/小程序随笔-一/" data-id="cjoqlwdjn0000ogsub8ifnshz" class="article-share-link">Share</a>
       
       
     </footer>
